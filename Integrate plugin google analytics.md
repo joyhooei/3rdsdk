@@ -83,7 +83,7 @@ AppDelegate::applicationDidFinishLaunching()
 
 sdkbox::PluginGoogleAnalytics::logEvent(&quot;Achievement&quot;, &quot;Unlocked&quot;, &quot;Slayed 100 dragons&quot; , 1);&gt;
 
-        ![](https://lh3.googleusercontent.com/VQM0IIhf6sqEyFfS7oTnLxjXWFVLoslwdBQVhlIAA92EKYNZFvA3iPEOia5DH1uFQjLxMzqaEQ7jJRIOSKAJUrouEx75LlRsag=w2400-h1350-rw-no)
+ ![](https://lh3.googleusercontent.com/VQM0IIhf6sqEyFfS7oTnLxjXWFVLoslwdBQVhlIAA92EKYNZFvA3iPEOia5DH1uFQjLxMzqaEQ7jJRIOSKAJUrouEx75LlRsag=w2400-h1350-rw-no)
 
         **static**** void ****logException** ( **const** std::string &amp; exceptionDescription ,
                            **bool** isFatal ) ;
