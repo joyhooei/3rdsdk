@@ -4,9 +4,7 @@
 
 Vì sdkbox không còn hỗ trợ plugin này nữa nên cần phải cài đặt thủ công:
 
-**1. Download tại đây:**
-
-  [http://download.sdkbox.com/installer/v1/sdkbox-vungle\_v2.3.2.0.tar.gz](http://download.sdkbox.com/installer/v1/sdkbox-vungle_v2.3.2.0.tar.gz)
+**1. Download tại [đây](http://download.sdkbox.com/installer/v1/sdkbox-vungle_v2.3.2.0.tar.gz).**
 
 **2 Giải nén file vừa tải về.**
 
