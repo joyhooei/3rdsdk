@@ -3,9 +3,8 @@
 **1. Cài đặt SDKBOX: (Xem ở bài cài đặt GoogleAnalytics)**
 **2. Chạy câu lệnh bằng command line:**
 
-  **sdkbox import admob**
-
-      ![](https://lh3.googleusercontent.com/Ke2u4Ii1U639Vw9Lx0NQu69mr7kLnKA8dI7AfJcaj2YIqKzJaIbbEhEkd5X-L2hcTbqT1CrJtWYIWYgjlNsd5-iNinVE0cOI7g=w2400-h1350-rw-no)
+ ** sdkbox import admob**
+  ![](https://lh3.googleusercontent.com/Ke2u4Ii1U639Vw9Lx0NQu69mr7kLnKA8dI7AfJcaj2YIqKzJaIbbEhEkd5X-L2hcTbqT1CrJtWYIWYgjlNsd5-iNinVE0cOI7g=w2400-h1350-rw-no) 
 
 **3.  Sửa file sdkbox config**
 
@@ -15,7 +14,7 @@ Mở file ./Resource/sdkbox\_config.json và sửa các thông số:
 - Ở key home, sửa lại giá trị của key width và height cho phù hợp (khuyên dùng 0 và 0 có nghĩa là smart banner, fit screen của user).
 - Key alignment: vị trí của banner (top, bottom, left, right, center, …)
 
- ![](https://lh3.googleusercontent.com/VAULoZEgqHawqN4COqmHAc0hKES-ti4BOxrt93ph9DTNQ_y6dYmvBxwQZJzWcWjGMTsvvKRh2qY4DqM91z7oT-06XlJ10Eajdw=w2400-h1350-rw-no)
+ ![](https://lh3.googleusercontent.com/VAULoZEgqHawqN4COqmHAc0hKES-ti4BOxrt93ph9DTNQ_y6dYmvBxwQZJzWcWjGMTsvvKRh2qY4DqM91z7oT-06XlJ10Eajdw=w2400-h1350-rw-no) 
 
 **4.  Sử dụng**
 
