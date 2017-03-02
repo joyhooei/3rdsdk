@@ -5,7 +5,7 @@
 
   **sdkbox import admob**
 
-        ![](https://lh3.googleusercontent.com/Ke2u4Ii1U639Vw9Lx0NQu69mr7kLnKA8dI7AfJcaj2YIqKzJaIbbEhEkd5X-L2hcTbqT1CrJtWYIWYgjlNsd5-iNinVE0cOI7g=w2400-h1350-rw-no) (<img />)
+        ![](C:\Users\huy21\Desktop\1.jpg) (<img />)
 
 **3.  Sửa file sdkbox config**
 
