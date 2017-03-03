@@ -1,4 +1,4 @@
-**#3rdsdk**
+#**3rdsdk**
 
 **1. Cách cài đặt SDKBOX** xem mục 1 bài viết [Cài đặt plugin Google Analytics](https://github.com/pipogame/3rdsdk/blob/master/Integrate%20plugin%20google%20analytics.md)
 
