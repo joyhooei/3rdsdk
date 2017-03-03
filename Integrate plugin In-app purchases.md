@@ -21,12 +21,12 @@ Khởi tạo:
 
 Kế thừa lớp listener:
 
-        #include "PluginIAP/PluginIAP.h"
-        ...
-        class HelloWorld : public cocos2d::Layer, public sdkbox::IAPListener
-        {
-        ...
-        }
+    #include "PluginIAP/PluginIAP.h"
+    ...
+    class HelloWorld : public cocos2d::Layer, public sdkbox::IAPListener
+    {
+    ...
+    }
         
 Khi kế thừa cần Override lại các hàm:
 
@@ -62,6 +62,7 @@ Khôi phục mua hàng
 
     static void restore();
 + Listeners:
+
 Hàm được gọi khi đã đăng nhập/ủy quyền
 
     void onInitialized(bool success);
