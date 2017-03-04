@@ -79,3 +79,5 @@ Khi restore
 Khi hủy mua hàng
 
     void onCanceled(const Product & p);
+*[Chi tiết bài viết](http://docs.sdkbox.com/en/plugins/iap/v3-cpp/) *
+*[Project mẫu](https://github.com/sdkbox/sdkbox-sample-iap/tree/master/cpp/Classes)*
