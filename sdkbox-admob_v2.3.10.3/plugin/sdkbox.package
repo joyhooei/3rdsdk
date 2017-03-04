@@ -1,0 +1,63 @@
+
+sdkbox.config_merge(PLUGIN_PATH + 'sdkbox_config.json.sample', COCOS_RESOURCES_DIR + 'sdkbox_config.json')
+
+sdkbox.copy_files(['ios/sdkbox.framework', 'ios/PluginAdMob.framework', 'ios/GoogleMobileAds.framework'], PLUGIN_PATH, IOS_PROJECT_DIR)
+sdkbox.xcode_add_frameworks(['sdkbox.framework', 'PluginAdMob.framework', 'GoogleMobileAds.framework', 'CoreMotion.framework', 'AdSupport.framework', 'AudioToolbox.framework', 'AVFoundation.framework', 'CoreGraphics.framework', 'CoreMedia.framework', 'CoreTelephony.framework', 'EventKit.framework', 'EventKitUI.framework', 'MessageUI.framework', 'StoreKit.framework', 'SystemConfiguration.framework', 'GameController.framework', 'MediaPlayer.framework', 'GLKit.framework', 'CoreVideo.framework', 'CoreBluetooth.framework', 'SafariServices.framework', 'MobileCoreServices.framework'])
+sdkbox.xcode_add_linker_flags(['-ObjC'])
+
+if COCOS_PROJECT_TYPE != 'lua' and COCOS_PROJECT_TYPE != 'js':
+   sdkbox.xcode_add_sources('sdkbox_config.json')
+
+sdkbox.android_copy_jars(['sdkbox.jar', 'PluginAdMob.jar', 'android-support-v4.jar'])
+sdkbox.android_copy_libs(['sdkbox', 'pluginadmob'])
+
+if COCOS_PROJECT_TYPE == 'lua':
+    sdkbox.copy_files(['luabindings/PluginAdMobLua.hpp', 'luabindings/PluginAdMobLua.cpp', 'luabindings/PluginAdMobLuaHelper.h', 'luabindings/PluginAdMobLuaHelper.cpp', 'luabindings/SDKBoxLuaHelper.h', 'luabindings/SDKBoxLuaHelper.cpp'], PLUGIN_PATH, COCOS_CLASSES_DIR)
+    lua_sources = ['PluginAdMobLua.hpp', 'PluginAdMobLua.cpp', 'PluginAdMobLuaHelper.h', 'PluginAdMobLuaHelper.cpp', 'SDKBoxLuaHelper.h', 'SDKBoxLuaHelper.cpp']
+    sdkbox.xcode_add_sources(lua_sources)
+
+    if ANDROID_MK_USES_WILDCARDS == False:
+        lua_sources = ['../../Classes/PluginAdMobLua.cpp', '../../Classes/PluginAdMobLuaHelper.cpp', '../../Classes/SDKBoxLuaHelper.cpp']
+        sdkbox.android_add_sources(lua_sources)
+
+if COCOS_PROJECT_TYPE == 'js':
+    sdkbox.copy_files(['jsbindings/PluginAdMobJS.cpp', 'jsbindings/PluginAdMobJS.hpp', 'jsbindings/PluginAdMobJSHelper.cpp', 'jsbindings/PluginAdMobJSHelper.h', 'jsbindings/SDKBoxJSHelper.cpp', 'jsbindings/SDKBoxJSHelper.h'], PLUGIN_PATH, COCOS_CLASSES_DIR)
+    js_sources = ['PluginAdMobJS.cpp', 'PluginAdMobJS.hpp', 'PluginAdMobJSHelper.cpp', 'PluginAdMobJSHelper.h', 'SDKBoxJSHelper.cpp', 'SDKBoxJSHelper.h']
+    sdkbox.xcode_add_sources(js_sources)
+
+    if ANDROID_MK_USES_WILDCARDS == False:
+        js_sources = ['../../Classes/PluginAdMobJS.cpp', '../../Classes/PluginAdMobJSHelper.cpp', '../../Classes/SDKBoxJSHelper.cpp']
+        sdkbox.android_add_sources(js_sources)
+
+sdkbox.android_set_permissions(['INTERNET', 'ACCESS_NETWORK_STATE'])
+sdkbox.android_add_element('application', 'meta-data', {'name':'com.google.android.gms.version', 'value':'@integer/google_play_services_version'})
+sdkbox.android_add_activity('com.google.android.gms.ads.AdActivity', [
+  'android:configChanges=keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize',
+  'android:theme=@android:style/Theme.Translucent'])
+sdkbox.android_set_target(15)
+
+sdkbox.android_add_static_libraries(['PluginAdMob', 'sdkbox'])
+sdkbox.android_add_calls(['import-add-path,$(LOCAL_PATH)', 'import-module, ./sdkbox', 'import-module, ./pluginadmob'])
+
+if sdkbox.satisfies_cocos_version('2'):
+   sdkbox.android_set_app_platform(9)
+   sdkbox.android_add_key_value(sdkbox.MAKE, 'LOCAL_LDLIBS', '-landroid')
+   sdkbox.android_add_key_value(sdkbox.MAKE, 'LOCAL_LDLIBS', '-llog')
+
+sdkbox.define('SDKBOX_PLUGIN_NAME', 'AdMob')
+if COCOS_2DX_VERSION.startswith('2'):
+   sdkbox.apply_patch(ANDROID_ACTIVITY_PATH + ANDROID_ACTIVITY_NAME + '.java', 'Cocos2dxActivity.java', root=ANDROID_ACTIVITY_PATH)
+   sdkbox.apply_patch(COCOS_CLASSES_DIR + 'AppDelegate.cpp', root=COCOS_CLASSES_DIR)
+else:
+   sdkbox.apply_patch(ANDROID_COCOS_SRC_DIR + 'Cocos2dxActivity.java', root=ANDROID_COCOS_PACKAGE_ROOT)
+   if COCOS_PROJECT_TYPE == 'lua':
+      if sdkbox.satisfies_cocos_version('3.10'):
+        sdkbox.apply_patch(COCOS_CLASSES_DIR + 'AppDelegate.cpp', root=COCOS_CLASSES_DIR)
+      else:
+        sdkbox.apply_patch(COCOS_CLASSES_DIR + 'lua_module_register.h', root=COCOS_CLASSES_DIR)
+   else:
+       sdkbox.apply_patch(COCOS_CLASSES_DIR + 'AppDelegate.cpp', root=COCOS_CLASSES_DIR)
+
+url = 'http://sdkbox-doc.github.io/en/plugins/' + SDKBOX_PACKAGE_NAME + '/v' + COCOS_2DX_VERSION[0] + '-' + COCOS_PROJECT_TYPE + '/'
+sdkbox.puts('Please reference the online documentation to finish the integration:\n' + url)
+sdkbox.open_documentation(url,True)
