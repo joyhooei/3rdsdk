@@ -1,0 +1,144 @@
+import os, shutil
+def myrmdir(path):
+  if os.path.exists(path):
+    shutil.rmtree(path)
+
+sdkbox.config_merge(PLUGIN_PATH + 'sdkbox_config.json.sample', COCOS_RESOURCES_DIR + 'sdkbox_config.json')
+
+sdkbox.copy_files(['ios/sdkbox.framework', 'ios/PluginFacebook.framework', 'ios/FBSDKCoreKit.framework', 'ios/FBSDKLoginKit.framework', 'ios/FBSDKShareKit.framework', 'ios/Bolts.framework'], PLUGIN_PATH, IOS_PROJECT_DIR)
+sdkbox.xcode_add_frameworks([ "sdkbox.framework", "PluginFacebook.framework", "FBSDKCoreKit.framework", "FBSDKLoginKit.framework", "FBSDKShareKit.framework", "Bolts.framework", "Security.framework", 'AdSupport.framework', 'SystemConfiguration.framework'])
+
+if COCOS_PROJECT_TYPE != 'lua' and COCOS_PROJECT_TYPE != 'js':
+   sdkbox.xcode_add_sources('sdkbox_config.json')
+
+sdkbox.android_copy_jars(['sdkbox.jar', 'PluginFacebook.jar', 'org.apache.http.legacy.jar'])
+sdkbox.android_copy_libs(['sdkbox', 'pluginfacebook'])
+
+myrmdir(os.path.join(PLUGIN_PATH, ANDROID_LIBS_DIR, 'facebook_lib'))
+sdkbox.copy_files(["android/libs/facebook_lib"], PLUGIN_PATH, ANDROID_LIBS_DIR)
+if sdkbox.supports(sdkbox.PROJ_ANDROID_STUDIO):
+    myrmdir(os.path.join(PLUGIN_PATH, ANDROID_STUDIO_LIBS_DIR, 'facebook_lib'))
+    sdkbox.copy_files(["android/libs/facebook_lib"], PLUGIN_PATH, ANDROID_STUDIO_LIBS_DIR)
+
+# android support v7
+myrmdir(os.path.join(PLUGIN_PATH, ANDROID_LIBS_DIR, 'android_support_v7'))
+sdkbox.copy_files(["android/libs/android_support_v7"], PLUGIN_PATH, ANDROID_LIBS_DIR)
+if sdkbox.supports(sdkbox.PROJ_ANDROID_STUDIO):
+    myrmdir(os.path.join(PLUGIN_PATH, ANDROID_STUDIO_LIBS_DIR, 'android_support_v7'))
+    sdkbox.copy_files(["android/libs/android_support_v7"], PLUGIN_PATH, ANDROID_STUDIO_LIBS_DIR)
+
+exclude_jars = ['android-support-v4.jar', 'android_support_v7/appcompat/libs/android-support-v4.jar']
+check_str = "compile fileTree(dir: 'libs', include: ['*.jar'])"
+gradle_path = ANDROID_STUDIO_LIBS_DIR + '/../build.gradle'
+sdkbox.android_studio_compile_exclude(check_str, exclude_jars, gradle_path)
+
+# for 3.9
+check_str = "compile fileTree(dir: '../java/libs', include: ['*.jar'])"
+gradle_path = ANDROID_STUDIO_LIBS_DIR + '/../build.gradle'
+sdkbox.android_studio_compile_exclude(check_str, exclude_jars, gradle_path)
+
+if COCOS_PROJECT_TYPE == 'lua':
+    sdkbox.copy_files(['luabindings/PluginFacebookLua.hpp', 'luabindings/PluginFacebookLua.cpp', 'luabindings/PluginFacebookLuaHelper.cpp', 'luabindings/PluginFacebookLuaHelper.h', 'luabindings/SDKBoxLuaHelper.h', 'luabindings/SDKBoxLuaHelper.cpp'], PLUGIN_PATH, COCOS_CLASSES_DIR)
+    lua_sources = ['PluginFacebookLua.hpp', 'PluginFacebookLua.cpp', 'PluginFacebookLuaHelper.cpp', 'PluginFacebookLuaHelper.h', 'SDKBoxLuaHelper.h', 'SDKBoxLuaHelper.cpp']
+    sdkbox.xcode_add_sources(lua_sources)
+
+    if ANDROID_MK_USES_WILDCARDS == False:
+        android_lua_sources = ['../../Classes/PluginFacebookLua.hpp', '../../Classes/PluginFacebookLua.cpp', '../../Classes/PluginFacebookLuaHelper.cpp', '../../Classes/PluginFacebookLuaHelper.h', '../../Classes/SDKBoxLuaHelper.h', '../../Classes/SDKBoxLuaHelper.cpp']
+        sdkbox.android_add_sources(android_lua_sources)
+
+if COCOS_PROJECT_TYPE == 'js':
+    sdkbox.copy_files(['jsbindings/PluginFacebookJS.cpp', 'jsbindings/PluginFacebookJS.hpp', 'jsbindings/PluginFacebookJSHelper.cpp', 'jsbindings/PluginFacebookJSHelper.h', 'jsbindings/SDKBoxJSHelper.cpp', 'jsbindings/SDKBoxJSHelper.h'], PLUGIN_PATH, COCOS_CLASSES_DIR)
+    js_sources = ['PluginFacebookJS.cpp', 'PluginFacebookJS.hpp', 'PluginFacebookJSHelper.cpp', 'PluginFacebookJSHelper.h', 'SDKBoxJSHelper.cpp', 'SDKBoxJSHelper.h']
+    sdkbox.xcode_add_sources(js_sources)
+
+    if ANDROID_MK_USES_WILDCARDS == False:
+        android_js_sources = ['../../Classes/PluginFacebookJS.cpp', '../../Classes/PluginFacebookJS.hpp', '../../Classes/PluginFacebookJSHelper.cpp', '../../Classes/PluginFacebookJSHelper.h', '../../Classes/SDKBoxJSHelper.cpp', '../../Classes/SDKBoxJSHelper.h']
+        sdkbox.android_add_sources(android_js_sources)
+
+sdkbox.android_set_permissions(['INTERNET', 'ACCESS_NETWORK_STATE'])
+
+facebook_lib = ANDROID_LIBS_DIR + './facebook_lib'
+sdkbox.android_add_library_reference(facebook_lib)
+sdkbox.android_studio_add_module('facebook_lib', facebook_lib)
+
+# update app build.gradle
+sdkbox.android_studio_replace_gradle('compileSdkVersion \d+', 'compileSdkVersion 23')
+sdkbox.android_studio_replace_gradle('minSdkVersion \d+', 'minSdkVersion 15')
+sdkbox.android_studio_replace_gradle('targetSdkVersion \d+', 'targetSdkVersion 23')
+sdkbox.android_studio_replace_gradle('buildToolsVersion "\d.+"', 'buildToolsVersion "23.0.3"')
+
+# update libcocos2dx build.gradle
+gradle_file = ANDROID_STUDIO_LIBS_DIR+'../build.gradle'
+sdkbox.android_studio_replace_gradle('compileSdkVersion \d+', 'compileSdkVersion 23', gradle_file)
+sdkbox.android_studio_replace_gradle('minSdkVersion \d+', 'minSdkVersion 15', gradle_file)
+sdkbox.android_studio_replace_gradle('targetSdkVersion \d+', 'targetSdkVersion 23', gradle_file)
+sdkbox.android_studio_replace_gradle('buildToolsVersion "\d.+"', 'buildToolsVersion "23.0.3"', gradle_file)
+
+sdkbox.android_add_xml_item({
+  'path': 'application',
+  'tag': 'activity',
+  'key': 'com.facebook.FacebookActivity',
+  'xml': '''
+  <activity
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="com.facebook.FacebookActivity"
+    android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+    android:theme="@android:style/Theme.Translucent.NoTitleBar"
+    android:label="@string/app_name" />'''
+})
+sdkbox.android_add_xml_item({
+  'path': 'application',
+  'tag': 'meta-data',
+  'key': 'com.facebook.sdk.ApplicationId',
+  'xml': '''
+  <meta-data
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="com.facebook.sdk.ApplicationId"
+    android:value="@string/facebook_app_id" />'''
+})
+sdkbox.android_add_xml_item({
+  'path': 'application',
+  'tag': 'provider',
+  'key': 'com.facebook.FacebookContentProvider',
+  'xml': '''
+  <provider
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="com.facebook.FacebookContentProvider"
+    android:authorities="com.facebook.app.FacebookContentProvider_replace_with_your_app_id_"
+    android:exported="true" />'''
+})
+
+if sdkbox.android_satisfies_sdk_version('2.3.3'):
+    sdkbox.android_set_element('application', None, {'hardwareAccelerated':'true'}, namespace=False)
+
+sdkbox.android_add_static_libraries(['PluginFacebook', 'sdkbox'])
+sdkbox.android_add_calls(['import-add-path, $(LOCAL_PATH)', 'import-module, ./sdkbox', 'import-module, ./pluginfacebook'])
+sdkbox.android_add_string('facebook_app_id', 'your_app_id')
+
+if sdkbox.satisfies_cocos_version('2'):
+   sdkbox.android_set_app_platform(15)
+   sdkbox.android_add_key_value(sdkbox.MAKE, 'LOCAL_LDLIBS', '-landroid')
+   sdkbox.android_add_key_value(sdkbox.MAKE, 'LOCAL_LDLIBS', '-llog')
+
+if sdkbox.satisfies_cocos_version('3.0', '3.2'):
+   sdkbox.android_set_app_platform(15)
+
+sdkbox.android_set_target(23)
+
+sdkbox.define('SDKBOX_PLUGIN_NAME', 'Facebook')
+if COCOS_2DX_VERSION.startswith('2'):
+   sdkbox.apply_patch(ANDROID_ACTIVITY_PATH + ANDROID_ACTIVITY_NAME + '.java', 'Cocos2dxActivity.java', root=ANDROID_ACTIVITY_PATH)
+   sdkbox.apply_patch(COCOS_CLASSES_DIR + 'AppDelegate.cpp', root=COCOS_CLASSES_DIR)
+else:
+   sdkbox.apply_patch(ANDROID_COCOS_SRC_DIR + 'Cocos2dxActivity.java', root=ANDROID_COCOS_PACKAGE_ROOT)
+   if COCOS_PROJECT_TYPE == 'lua':
+      if sdkbox.satisfies_cocos_version('3.10'):
+        sdkbox.apply_patch(COCOS_CLASSES_DIR + 'AppDelegate.cpp', root=COCOS_CLASSES_DIR)
+      else:
+        sdkbox.apply_patch(COCOS_CLASSES_DIR + 'lua_module_register.h', root=COCOS_CLASSES_DIR)
+   else:
+       sdkbox.apply_patch(COCOS_CLASSES_DIR + 'AppDelegate.cpp', root=COCOS_CLASSES_DIR)
+
+url = 'http://sdkbox-doc.github.io/en/plugins/' + SDKBOX_PACKAGE_NAME + '/v' + COCOS_2DX_VERSION[0] + '-' + COCOS_PROJECT_TYPE + '/'
+sdkbox.puts('Please reference the online documentation to finish the integration:\n' + url)
+sdkbox.open_documentation(url,True)
