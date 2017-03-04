@@ -54,7 +54,7 @@ Lưu ý: Cấu hình Facebook app đúng để được cung cấp các dịch v
  Hình tròn màu xanh bên Tên ứng dụng sẽ sáng lên 
  ![](https://lh3.googleusercontent.com/Hizf2h7BREEgBNw0HSpVX6NPc_M4k78BpowYkldz3U9hNPGbMlq7Q5uMdFzZSMcuR-P6LrGyrGFL8PRe2CPDiRhDE5VSrJTX=w2400-h1350-rw-no)
 
-_Chi tiết:_ [_http://blog.cocos2d-x.org/2016/02/setting-up-facebook-app-for-sdkbox-services/_](http://blog.cocos2d-x.org/2016/02/setting-up-facebook-app-for-sdkbox-services/)
+_[Chi tiết](http://blog.cocos2d-x.org/2016/02/setting-up-facebook-app-for-sdkbox-services/)_
 
 
 
@@ -159,4 +159,4 @@ static void fetchFriends() ;
 
 
 
-_Chi tiết bài viết: http://docs.sdkbox.com/en/plugins/facebook/v3-cpp/_
+_[Chi tiết bài viết](http://docs.sdkbox.com/en/plugins/facebook/v3-cpp/)_
