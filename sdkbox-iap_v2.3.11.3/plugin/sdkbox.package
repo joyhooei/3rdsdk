@@ -1,0 +1,65 @@
+
+sdkbox.config_merge(PLUGIN_PATH + 'sdkbox_config.json.sample', COCOS_RESOURCES_DIR + 'sdkbox_config.json')
+
+sdkbox.copy_files([ 'ios/sdkbox.framework', 'ios/PluginIAP.framework' ], PLUGIN_PATH, IOS_PROJECT_DIR)
+sdkbox.xcode_add_frameworks([ "sdkbox.framework", "PluginIAP.framework", "Security.framework", "StoreKit.framework", "SystemConfiguration.framework" ])
+
+if COCOS_PROJECT_TYPE != 'lua' and COCOS_PROJECT_TYPE != 'js':
+   sdkbox.xcode_add_sources('sdkbox_config.json')
+
+sdkbox.android_copy_jars(['sdkbox.jar', 'PluginIAP.jar', 'PluginGooglePlay.jar'])
+sdkbox.android_copy_libs(['sdkbox', 'pluginiap'])
+
+if COCOS_PROJECT_TYPE == 'lua':
+    sdkbox.copy_files([ 'luabindings/PluginIAPLua.hpp', 'luabindings/PluginIAPLua.cpp', 'luabindings/PluginIAPLuaHelper.cpp', 'luabindings/PluginIAPLuaHelper.h', 'luabindings/SDKBoxLuaHelper.h', 'luabindings/SDKBoxLuaHelper.cpp' ], PLUGIN_PATH, COCOS_CLASSES_DIR)
+    lua_sources = ['PluginIAPLua.hpp', 'PluginIAPLua.cpp', 'PluginIAPLuaHelper.cpp', 'PluginIAPLuaHelper.h', 'SDKBoxLuaHelper.h', 'SDKBoxLuaHelper.cpp']
+    sdkbox.xcode_add_sources(lua_sources)
+
+    if ANDROID_MK_USES_WILDCARDS == False:
+        android_lua_sources = ['../../Classes/PluginIAPLua.cpp', '../../Classes/PluginIAPLuaHelper.cpp', '../../Classes/SDKBoxLuaHelper.cpp']
+        sdkbox.android_add_sources(android_lua_sources)
+
+if COCOS_PROJECT_TYPE == 'js':
+    sdkbox.copy_files(['jsbindings/PluginIAPJS.cpp', 'jsbindings/PluginIAPJS.hpp', 'jsbindings/PluginIAPJSHelper.cpp', 'jsbindings/PluginIAPJSHelper.h', 'jsbindings/SDKBoxJSHelper.cpp', 'jsbindings/SDKBoxJSHelper.h'], PLUGIN_PATH, COCOS_CLASSES_DIR)
+    js_sources = ['PluginIAPJS.cpp', 'PluginIAPJS.hpp', 'PluginIAPJSHelper.cpp', 'PluginIAPJSHelper.h', 'SDKBoxJSHelper.cpp', 'SDKBoxJSHelper.h']
+    sdkbox.xcode_add_sources(js_sources)
+
+    if ANDROID_MK_USES_WILDCARDS == False:
+        android_js_sources = ['../../Classes/PluginIAPJS.cpp', '../../Classes/PluginIAPJSHelper.cpp', '../../Classes/SDKBoxJSHelper.cpp' ]
+        sdkbox.android_add_sources(android_js_sources)
+
+sdkbox.android_set_permissions(['INTERNET', 'ACCESS_WIFI_STATE', 'ACCESS_NETWORK_STATE'])
+
+sdkbox.android_set_permissions(['com.android.vending.BILLING'], verbatim=True)
+
+sdkbox.android_add_static_libraries(['PluginIAP', 'sdkbox', 'android_native_app_glue'])
+sdkbox.android_add_calls(['import-add-path, $(LOCAL_PATH)', 'import-module, ./sdkbox', 'import-module, ./pluginiap'])
+
+# sdkbox.android_add_element('application', 'meta-data', {'name':'com.google.android.gms.version', 'value':'@integer/google_play_services_version'})
+
+if sdkbox.satisfies_cocos_version('2'):
+   sdkbox.android_set_app_platform(9)
+   sdkbox.android_add_key_value(sdkbox.MAKE, 'LOCAL_LDLIBS', '-landroid')
+   sdkbox.android_add_key_value(sdkbox.MAKE, 'LOCAL_LDLIBS', '-llog')
+
+if sdkbox.satisfies_cocos_version('3.0', '3.2'):
+   sdkbox.android_set_app_platform(9)
+
+
+sdkbox.define('SDKBOX_PLUGIN_NAME', 'IAP')
+if COCOS_2DX_VERSION.startswith('2'):
+   sdkbox.apply_patch(ANDROID_ACTIVITY_PATH + ANDROID_ACTIVITY_NAME + '.java', 'Cocos2dxActivity.java', root=ANDROID_ACTIVITY_PATH)
+   sdkbox.apply_patch(COCOS_CLASSES_DIR + 'AppDelegate.cpp', root=COCOS_CLASSES_DIR)
+else:
+   sdkbox.apply_patch(ANDROID_COCOS_SRC_DIR + 'Cocos2dxActivity.java', root=ANDROID_COCOS_PACKAGE_ROOT)
+   if COCOS_PROJECT_TYPE == 'lua':
+      if sdkbox.satisfies_cocos_version('3.10'):
+        sdkbox.apply_patch(COCOS_CLASSES_DIR + 'AppDelegate.cpp', root=COCOS_CLASSES_DIR)
+      else:
+        sdkbox.apply_patch(COCOS_CLASSES_DIR + 'lua_module_register.h', root=COCOS_CLASSES_DIR)
+   else:
+       sdkbox.apply_patch(COCOS_CLASSES_DIR + 'AppDelegate.cpp', root=COCOS_CLASSES_DIR)
+
+url = 'http://sdkbox-doc.github.io/en/plugins/' + SDKBOX_PACKAGE_NAME + '/v' + COCOS_2DX_VERSION[0] + '-' + COCOS_PROJECT_TYPE + '/'
+sdkbox.puts('Please reference the online documentation to finish the integration:\n' + url)
+sdkbox.open_documentation(url,True)
