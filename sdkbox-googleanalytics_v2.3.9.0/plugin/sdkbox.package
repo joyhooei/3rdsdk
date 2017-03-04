@@ -1,0 +1,140 @@
+
+sdkbox.config_merge(PLUGIN_PATH + 'sdkbox_config.json.sample', COCOS_RESOURCES_DIR + 'sdkbox_config.json')
+
+sdkbox.copy_files(['ios/sdkbox.framework', 'ios/PluginGoogleAnalytics.framework'], PLUGIN_PATH, IOS_PROJECT_DIR)
+sdkbox.xcode_add_frameworks(['sdkbox.framework', 'PluginGoogleAnalytics.framework', 'CoreMotion.framework', 'AdSupport.framework', 'CoreData.framework', 'Security.framework', 'SystemConfiguration.framework', 'libsqlite3.dylib', 'libz.dylib'])
+
+if COCOS_PROJECT_TYPE != 'lua' and COCOS_PROJECT_TYPE != 'js':
+   sdkbox.xcode_add_sources('sdkbox_config.json')
+
+sdkbox.android_copy_jars(['sdkbox.jar', 'PluginGoogleAnalytics.jar'])
+sdkbox.android_copy_libs(['sdkbox', 'plugingoogleanalytics'])
+
+sdkbox.copy_files(['android/res/xml/global_tracker.xml'], PLUGIN_PATH, ANDROID_PROJECT_DIR + 'res/xml/')
+if sdkbox.supports(sdkbox.PROJ_ANDROID_STUDIO):
+    sdkbox.copy_files(['android/res/xml/global_tracker.xml'], PLUGIN_PATH, ANDROID_STUDIO_PROJECT_DIR + 'app/res/xml/')
+
+if COCOS_PROJECT_TYPE == 'lua':
+    sdkbox.copy_files(['luabindings/PluginGoogleAnalyticsLua.hpp', 'luabindings/PluginGoogleAnalyticsLua.cpp', 'luabindings/SDKBoxLuaHelper.h', 'luabindings/SDKBoxLuaHelper.cpp'], PLUGIN_PATH, COCOS_CLASSES_DIR)
+
+    lua_sources = ['PluginGoogleAnalyticsLua.hpp', 'PluginGoogleAnalyticsLua.cpp', 'SDKBoxLuaHelper.h', 'SDKBoxLuaHelper.cpp']
+    sdkbox.xcode_add_sources(lua_sources)
+
+    if ANDROID_MK_USES_WILDCARDS == False:
+        lua_sources = ['../../Classes/PluginGoogleAnalyticsLua.hpp', '../../Classes/PluginGoogleAnalyticsLua.cpp', '../../Classes/SDKBoxLuaHelper.h', '../../Classes/SDKBoxLuaHelper.cpp']
+        sdkbox.android_add_sources(lua_sources)
+
+if COCOS_PROJECT_TYPE == 'js':
+    sdkbox.copy_files(['jsbindings/PluginGoogleAnalyticsJS.cpp', 'jsbindings/PluginGoogleAnalyticsJS.hpp','jsbindings/SDKBoxJSHelper.cpp', 'jsbindings/SDKBoxJSHelper.h'], PLUGIN_PATH, COCOS_CLASSES_DIR)
+
+    js_sources = ['PluginGoogleAnalyticsJS.cpp', 'PluginGoogleAnalyticsJS.hpp', 'SDKBoxJSHelper.cpp', 'SDKBoxJSHelper.h']
+    sdkbox.xcode_add_sources(js_sources)
+
+    if ANDROID_MK_USES_WILDCARDS == False:
+        js_sources = ['../../Classes/PluginGoogleAnalyticsJS.cpp', '../../Classes/PluginGoogleAnalyticsJS.hpp', '../../Classes/SDKBoxJSHelper.cpp', '../../Classes/SDKBoxJSHelper.h']
+        sdkbox.android_add_sources(js_sources)
+
+sdkbox.android_set_permissions(['INTERNET', 'ACCESS_NETWORK_STATE', 'ACCESS_WIFI_STATE', 'WAKE_LOCK'])
+
+sdkbox.android_add_xml_item({
+  'path': 'application',
+  'tag': 'meta-data',
+  'key': 'com.google.android.gms.version',
+  'xml': '''
+  <meta-data
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="com.google.android.gms.version"
+    android:value="@integer/google_play_services_version" />'''
+})
+sdkbox.android_add_xml_item({
+  'path': 'application',
+  'tag': 'meta-data',
+  'key': 'com.google.android.gms.analytics.globalConfigResource',
+  'xml': '''
+  <meta-data
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="com.google.android.gms.analytics.globalConfigResource"
+    android:resource="@xml/global_tracker" />'''
+})
+
+# Optionally, register AnalyticsReceiver and AnalyticsService to support background dispatching on non-Google Play devices
+sdkbox.android_add_xml_item({
+  'path': 'application',
+  'tag': 'receiver',
+  'key': 'com.google.android.gms.analytics.AnalyticsReceiver',
+  'xml': '''
+  <receiver xmlns:android="http://schemas.android.com/apk/res/android" android:enabled="true" android:name="com.google.android.gms.analytics.AnalyticsReceiver">
+      <intent-filter>
+        <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+      </intent-filter>
+    </receiver>'''
+})
+
+sdkbox.android_add_xml_item({
+  'path': 'application',
+  'tag': 'service',
+  'key': 'com.google.android.gms.analytics.AnalyticsService',
+  'xml': '''
+  <service
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:enabled="true"
+    android:exported="false"
+    android:name="com.google.android.gms.analytics.AnalyticsService" />'''
+})
+
+# Optionally, register CampaignTrackingReceiver and CampaignTrackingService to enable installation campaign reporting
+sdkbox.android_add_xml_item({
+  'path': 'application',
+  'tag': 'receiver',
+  'key': 'com.google.android.gms.analytics.CampaignTrackingReceiver',
+  'xml': '''
+  <receiver xmlns:android="http://schemas.android.com/apk/res/android" android:exported="true" android:name="com.google.android.gms.analytics.CampaignTrackingReceiver">
+      <intent-filter>
+          <action android:name="com.android.vending.INSTALL_REFERRER" />
+      </intent-filter>
+  </receiver>'''
+})
+
+sdkbox.android_add_xml_item({
+  'path': 'application',
+  'tag': 'service',
+  'key': 'com.google.android.gms.analytics.CampaignTrackingService',
+  'xml': '''
+  <service
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="com.google.android.gms.analytics.CampaignTrackingService" />'''
+})
+
+if sdkbox.android_satisfies_sdk_version('2.3.3'):
+    sdkbox.android_set_element('application', None, {'hardwareAccelerated':'true'}, namespace=False)
+
+sdkbox.android_add_static_libraries(['PluginGoogleAnalytics', 'sdkbox'])
+sdkbox.android_add_calls(['import-add-path,$(LOCAL_PATH)', 'import-module, ./sdkbox', 'import-module, ./plugingoogleanalytics'])
+
+if sdkbox.satisfies_cocos_version('2'):
+   sdkbox.android_set_app_platform(9)
+   sdkbox.android_add_key_value(sdkbox.MAKE, 'LOCAL_LDLIBS', '-landroid')
+   sdkbox.android_add_key_value(sdkbox.MAKE, 'LOCAL_LDLIBS', '-llog')
+
+if sdkbox.satisfies_cocos_version('3.0', '3.2'):
+   sdkbox.android_set_app_platform(9)
+
+sdkbox.define('SDKBOX_PLUGIN_NAME', 'GoogleAnalytics')
+sdkbox.define('NO_LUA_HELPER')
+sdkbox.define('NO_JS_HELPER')
+if COCOS_2DX_VERSION.startswith('2'):
+   sdkbox.apply_patch(ANDROID_ACTIVITY_PATH + ANDROID_ACTIVITY_NAME + '.java', 'Cocos2dxActivity.java', root=ANDROID_ACTIVITY_PATH)
+   sdkbox.apply_patch(COCOS_CLASSES_DIR + 'AppDelegate.cpp', root=COCOS_CLASSES_DIR)
+else:
+   sdkbox.apply_patch(ANDROID_COCOS_SRC_DIR + 'Cocos2dxActivity.java', root=ANDROID_COCOS_PACKAGE_ROOT)
+   if COCOS_PROJECT_TYPE == 'lua':
+      if sdkbox.satisfies_cocos_version('3.10'):
+        sdkbox.apply_patch(COCOS_CLASSES_DIR + 'AppDelegate.cpp', root=COCOS_CLASSES_DIR)
+      else:
+        sdkbox.apply_patch(COCOS_CLASSES_DIR + 'lua_module_register.h', root=COCOS_CLASSES_DIR)
+   else:
+       sdkbox.apply_patch(COCOS_CLASSES_DIR + 'AppDelegate.cpp', root=COCOS_CLASSES_DIR)
+
+url = 'http://sdkbox-doc.github.io/en/plugins/' + SDKBOX_PACKAGE_NAME + '/v' + COCOS_2DX_VERSION[0] + '-' + COCOS_PROJECT_TYPE + '/'
+sdkbox.puts('Please reference the online documentation to finish the integration:\n' + url)
+sdkbox.open_documentation(url,True)

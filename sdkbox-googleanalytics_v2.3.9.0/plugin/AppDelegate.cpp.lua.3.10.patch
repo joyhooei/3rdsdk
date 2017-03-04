@@ -1,0 +1,22 @@
+
+target = patcher.target(COCOS_CLASSES_DIR + 'AppDelegate.cpp')
+  
+m = target.modification('step1')
+m.before('using namespace CocosDenshion;')
+m.after ('#include', reversed=True)
+m.append([
+	'#ifdef SDKBOX_ENABLED',
+	'#include "Plugin$(SDKBOX_PLUGIN_NAME)Lua.hpp"',
+	'#include "Plugin$(SDKBOX_PLUGIN_NAME)LuaHelper.h"', #stripifdef NO_LUA_HELPER
+	'#endif'
+])
+ 
+m = target.modification('step2')
+m.after ('static int register_all_packages()')
+m.after ('{')
+m.append([
+	'#ifdef SDKBOX_ENABLED',
+	'    register_all_Plugin$(SDKBOX_PLUGIN_NAME)Lua(LuaEngine::getInstance()->getLuaStack()->getLuaState());',
+	'    register_all_Plugin$(SDKBOX_PLUGIN_NAME)Lua_helper(LuaEngine::getInstance()->getLuaStack()->getLuaState());', #stripifdef NO_LUA_HELPER
+	'#endif'
+])
