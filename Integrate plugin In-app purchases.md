@@ -3,11 +3,13 @@
 **1. Chạy câu lệnh bằng cmd:**
 
     sdkbox import iap
+![](https://lh3.googleusercontent.com/QovSDqsnIO4Vhf4bCNIxvLmhThC9VXGAwIuIaCMFiUtf4Z7-3FAFro4Hg5mG-bfJIvd4LlxP4hhG-CODpPG9rjtP0LrOt94m=w2400-h1350-rw-no)
     
 **2. Sửa file** ./Resource/sdkbox_config.json
 
     Điền key google play vào android->iap->key
-    
+![](https://lh3.googleusercontent.com/yKC2N3pja96vNdAcNMtmghitPonmJP55gSwmZMbODgIzI8A81kI1nklnVP5iaj3k6NGyyfmY1rfWm1PXtVV1axlU4yooGGkV=w2400-h1350-rw-no)
+
 **3. Sử dụng**
 
 Khởi tạo:
@@ -18,6 +20,7 @@ Khởi tạo:
     {
       sdkbox::IAP::init();
     }
+![](https://lh3.googleusercontent.com/GwHhwyJOGHWHtzXKrBmiMpShui72cyKk4XgBFVUxn-3mauiVQlnrjMw_m0PUWgCzYY2rK3L3c8OGBGjs5dxUFwDOpkyWcpUh=w2400-h1350-rw-no)
 
 Kế thừa lớp listener:
 
