@@ -1,0 +1,7 @@
+need_copy = not sdkbox.android_has_library_reference ('google-play-services_lib')
+
+if need_copy:
+    sdkbox.copy_files(['gps'], PLUGIN_PATH, ANDROID_LIBS_DIR)
+    google_play_services = ANDROID_LIBS_DIR + 'gps'
+    sdkbox.android_add_library_reference(google_play_services)
+    sdkbox.android_studio_add_module('gps', google_play_services)
