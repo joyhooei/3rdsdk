@@ -61,6 +61,9 @@ Gửi yêu cầu mua
 Cập nhật thông tin mua hàng (title, price, description)
 
     static void refresh();
+    onProductRequestSuccess sẽ được gọi nếu request thành công
+    onProductRequestFailure sẽ được gọi nếu xảy ra ngoại lệ
+
 Khôi phục mua hàng
 
     static void restore();
