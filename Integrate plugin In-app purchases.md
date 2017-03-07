@@ -58,6 +58,9 @@ Lấy các sản phẩm
 Gửi yêu cầu mua
 
     static void purchase(const std::string & name);
+    onSuccess được gọi khi mua hàng thành công
+    onFailure được gọi khi mua hàng thất bại
+    onCanceled được gọi khi hủy hàng
 Cập nhật thông tin mua hàng (title, price, description)
 
     static void refresh();
