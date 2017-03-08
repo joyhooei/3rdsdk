@@ -7,7 +7,9 @@
     
 **2. Sửa file** ./Resource/sdkbox_config.json
 
-    Điền key google play vào android->iap->key
+    Điền key google play vào android->iap->id'
+    type có 2 loại: "non_consumable" thể hiện loại hàng này chỉ cần mua 1 lần. Ví dụ: Mở khóa nhân vật, level pack,..
+                    "comsumable" ngược lại, có thể mua nhiều lần. Ví dụ: Vàng, nâng cấp,..
 ![](https://lh3.googleusercontent.com/yKC2N3pja96vNdAcNMtmghitPonmJP55gSwmZMbODgIzI8A81kI1nklnVP5iaj3k6NGyyfmY1rfWm1PXtVV1axlU4yooGGkV=w2400-h1350-rw-no)
 
 **3. Sử dụng**
@@ -58,6 +60,7 @@ Lấy các sản phẩm
 Gửi yêu cầu mua
 
     static void purchase(const std::string & name);
+    name ở đây là "coin_package", "remove_ads"... config trong file json. Không phải tên id của gói hàng.
     onSuccess được gọi khi mua hàng thành công
     onFailure được gọi khi mua hàng thất bại
     onCanceled được gọi khi hủy hàng
