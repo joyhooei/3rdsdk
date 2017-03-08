@@ -73,6 +73,16 @@ Cập nhật thông tin mua hàng (title, price, description)
 Khôi phục mua hàng
 
     static void restore();
+    Khi restore thàh công, hàm onRestored đc gọi. Gọi hàm này khi muốn phục hồi cái item non-consumable đã mua của user. Ví dụ:
+    void HelloWorld::onRestored(const sdkbox::Product& p)
+    {
+        if(p.name == "YOUR_IAP_NAME")
+        {
+            UserDefault::getInstance()->setBoolForKey("YOUR_STRING_HERE", true);
+            UserDefault::getInstance()->flush();
+        // do something here
+    }
+    }
 + Listeners:
 
 Hàm được gọi khi đã đăng nhập/ủy quyền
