@@ -36,6 +36,7 @@ Sửa đổi giá trị của Track ID. Ví dụ:
  ![](https://lh3.googleusercontent.com/X33qe-qpfr7xZynrnpkOCI7zgoFj1IxKLw-PJ0haJha7kA7WVuTngEqN17LCv6jIbJBFUuH0aPy__w0Fp_g8d7NWumw_FvZZfg=w2400-h1350-rw-no)
 
 **4. Thêm code trong project**
+
 *Đối với nền tảng iOS:
 Trong cài đặt project Xcode, thêm các Framework trong thư mục /proj.ios_mac vào project*
 
