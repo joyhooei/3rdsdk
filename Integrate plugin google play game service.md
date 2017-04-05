@@ -4,7 +4,7 @@
 
 **2. Chạy câu lệnh trên command prompt:**
 
-    **sdkbox import gpg**
+    sdkbox import gpg
 
 **3. Sửa file** android/res/values/string.xml điền app id google.
 
@@ -15,6 +15,8 @@
 **4. Khởi tạo plugin** trong AppDelegate::ApplicationDidFinishLaunching()
 
   sdkbox::PluginGPG::init();
+  
+  *Đối với nền tảng iOS, trước khi sử dụng cần mở Xcode -> cài đặt project -> add thêm các framework trong thư mục /project_ios_mac/ vào project*
 
 **5. Khởi tạo biến game service:       **
 
