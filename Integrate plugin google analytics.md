@@ -1,6 +1,4 @@
-#**Hướng dẫn cái đặt Plugin Google Analytics**
-
-**sử dụng SDKBOX**
+#**Hướng dẫn cái đặt Plugin Google Analytics sử dụng SDKBOX**
 
 
 **1. Cài đặt SDKBOX**
