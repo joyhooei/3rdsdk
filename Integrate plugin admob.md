@@ -18,7 +18,8 @@ Mở file ./Resource/sdkbox\_config.json và sửa các thông số:
 
 **4.  Sử dụng**
 
-*Đối với nền tảng iOS, trước khi sử dụng cần mở Xcode -> cài đặt project -> add thêm các framework trong thư mục /project_ios_mac/ vào project*
+      *Đối với nền tảng iOS, trước khi sử dụng cần mở Xcode -> cài đặt project -> add thêm các framework trong thư mục /project_ios_mac/ vào project*
+
 Trước tiên là include vào project:
 
     #include &quot;PluginAdMob/PluginAdMob.h&quot;
