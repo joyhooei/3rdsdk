@@ -127,17 +127,16 @@ _[Chi tiết](http://blog.cocos2d-x.org/2016/02/setting-up-facebook-app-for-sdkb
 
 - Trước tiên, include vào project:
 
-*#include &quot;PluginFacebook/PluginFacebook.h&quot;
+      #include &quot;PluginFacebook/PluginFacebook.h&quot;
 
 - Khởi tạo facebook trong hàm AppDelegate::applicationDidFinishLaunching():
-AppDelegate::applicationDidFinishLaunching()
-{
 
-*#ifdef SDKBOX\_ENABLED
-                     sdkbox::PluginFacebook::init();
-
-*#endif
-        }
+      AppDelegate::applicationDidFinishLaunching()
+      {
+      #ifdef SDKBOX\_ENABLED
+          sdkbox::PluginFacebook::init();
+      #endif
+      }
 
 - Các hàm để sử dụng facebook:
 
@@ -155,22 +154,19 @@ AppDelegate::applicationDidFinishLaunching()
 
 - Quyền truy cập:
 
-        Facebook có 2 loại quyền truy cập là publish và read _(Chi tiết_ [_https://developers.facebook.com/docs/facebook-login/permissions/v2.3#reference_](https://developers.facebook.com/docs/facebook-login/permissions/v2.3#reference)_)_
+Facebook có 2 loại quyền truy cập là publish và read _(Chi tiết_ [_https://developers.facebook.com/docs/facebook-login/permissions/v2.3#reference_](https://developers.facebook.com/docs/facebook-login/permissions/v2.3#reference)_)_
 
-        Để yêu cầu quyền truy cập đến facebook cá nhân của người dùng cần gọi hàm:
+Để yêu cầu quyền truy cập đến facebook cá nhân của người dùng cần gọi hàm:
 
-sdkbox::PluginFacebook::requestReadPermissions();
-sdkbox::PluginFacebook::requestPublishPermissions();
+    sdkbox::PluginFacebook::requestReadPermissions();
+    sdkbox::PluginFacebook::requestPublishPermissions();
 
 Các tham số truyền vào thường dùng:
 
-FB\_PERM\_READ\_PUBLIC\_PROFILE
-
-FB\_PERM\_READ\_EMAIL
-
-FB\_PERM\_READ\_USER\_FRIENDS
-
-FB\_PERM\_PUBLISH\_POST
+    FB\_PERM\_READ\_PUBLIC\_PROFILE
+    FB\_PERM\_READ\_EMAIL
+    FB\_PERM\_READ\_USER\_FRIENDS
+    FB\_PERM\_PUBLISH\_POST
 
 Ví dụ: sdkbox::PluginFacebook::requestReadPermissions({sdkbox::FB\_PERM\_READ\_PUBLIC\_PROFILE, sdkbox::FB\_PERM\_READ\_USER\_FRIENDS});
 sdkbox::PluginFacebook::requestPublishPermissions({sdkbox::FB\_PERM\_PUBLISH\_POST}); 
@@ -184,13 +180,14 @@ sdkbox::PluginFacebook::requestPublishPermissions({sdkbox::FB\_PERM\_PUBLISH\_PO
 
 - Chia sẻ ảnh:
 
-sdkbox::FBShareInfo info;
-info.type  = sdkbox::FB\_PHOTO;
-info.title = &quot;New Dragon Hunting game&quot;;
-info.image = &quot;icon.png&quot;;
-sdkbox::PluginFacebook::share(info);
+      sdkbox::FBShareInfo info;
+      info.type  = sdkbox::FB\_PHOTO;
+      info.title = &quot;New Dragon Hunting game&quot;;
+      info.image = __path_to_image__
+      sdkbox::PluginFacebook::share(info);
 
  Thay hàm share  thành sdkbox::PluginFacebook::dialog(info); để hiện lên mục edit nội dung bài viết user muốn share
+ **Lưu ý: info.image cần truyền vào đường dẫn tuyệt đối của ảnh (Sử dụng FileUtils::getInstance()->getAbsolutePath...()**
 
 Chụp ảnh màn hình trong cocos2d: http://www.cocos2d-x.org/wiki/Take\_a\_Screenshot
 
