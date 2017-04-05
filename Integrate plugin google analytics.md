@@ -1,10 +1,9 @@
-**Hướng dẫn cái đặt Plugin Google Analytics**
+#**Hướng dẫn cái đặt Plugin Google Analytics**
 
 **sử dụng SDKBOX**
 
 
-
-**1. Cài đặt SDKBox**
+**1. Cài đặt SDKBOX**
 
 Cài đặt Python
 Chạy câu lệnh sau bằng command line:
@@ -37,6 +36,8 @@ Sửa đổi giá trị của Track ID. Ví dụ:
  ![](https://lh3.googleusercontent.com/X33qe-qpfr7xZynrnpkOCI7zgoFj1IxKLw-PJ0haJha7kA7WVuTngEqN17LCv6jIbJBFUuH0aPy__w0Fp_g8d7NWumw_FvZZfg=w2400-h1350-rw-no)
 
 **4. Thêm code trong project**
+*Đối với nền tảng iOS:
+Trong cài đặt project Xcode, thêm các Framework trong thư mục /proj.ios_mac vào project*
 
 Trước tiên, include vào source:
 
