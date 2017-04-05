@@ -18,6 +18,7 @@ Mở file ./Resource/sdkbox\_config.json và sửa các thông số:
 
 **4.  Sử dụng**
 
+*Đối với nền tảng iOS, trước khi sử dụng cần mở Xcode -> cài đặt project -> add thêm các framework trong thư mục /project_ios_mac/ vào project*
 Trước tiên là include vào project:
 
     #include &quot;PluginAdMob/PluginAdMob.h&quot;
@@ -34,13 +35,13 @@ Khởi tạo plugin admob
 
 - Các hàm để sử dụng quảng cáo:
 
-sdkbox::PluginAdMob::show(&quot;home&quot;);
+      sdkbox::PluginAdMob::show(&quot;home&quot;);
 
-sdkbox::PluginAdmob::show(&quot;gameover&quot;); ![](https://lh3.googleusercontent.com/q4VyXyBBruinIEYSua9bcDCPOVQSgrmvTaGsKMWduicj468_9ZpZ5Pxj5q4rMGANN9l0r00dNMhOjZsGWIwea1p96BoQZVGXwQ=w2400-h1350-rw-no)
+      <Hiển thị quảng cáo banner và fullscr>
+      sdkbox::PluginAdmob::show(&quot;gameover&quot;); ![](https://lh3.googleusercontent.com/q4VyXyBBruinIEYSua9bcDCPOVQSgrmvTaGsKMWduicj468_9ZpZ5Pxj5q4rMGANN9l0r00dNMhOjZsGWIwea1p96BoQZVGXwQ=w2400-h1350-rw-no)
 
-        &lt;Hiển thị quảng cáo banner và fullscr&gt;
         sdkbox::PluginAdmob::hide(&quot;home&quot;);
-        &lt;Tắt quảng cáo banner&gt;
+        <Tắt quảng cáo banner>
 
 
 
