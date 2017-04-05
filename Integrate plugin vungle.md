@@ -4,11 +4,13 @@
 
 Vì sdkbox không còn hỗ trợ plugin này nữa nên cần phải cài đặt thủ công.
 
-**Đối với nền tảng iOS, trước khi sử dụng cần mở Xcode -> cài đặt project -> add thêm các framework trong thư mục /project_ios_mac/ vào project và bắt đầu từ bước 8**
-
 **1. Download tại [đây](http://download.sdkbox.com/installer/v1/sdkbox-vungle_v2.3.2.0.tar.gz).**
 
 **2 Giải nén file vừa tải về.**
+
+*Đối với nền tảng iOS:*
+  *copy các framework trong file vừa tải cop vào &lt;project_root&gt;/project.ios_mac*
+  *Trước khi sử dụng cần mở Xcode -> cài đặt project -> add thêm các framework trong thư mục /project_ios_mac/ vào project*
 
 **3. Copy các file jar** từ plugin/android/libs sang thư mục cocos2d/cocos/platform/android/java/libs của project
 
