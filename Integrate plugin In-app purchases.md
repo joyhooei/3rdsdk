@@ -14,6 +14,8 @@
 
 **3. Sử dụng**
 
+*Đối với nền tảng iOS, trước khi sử dụng cần mở Xcode -> cài đặt project -> add thêm các framework trong thư mục /project_ios_mac/ vào project*
+
 Khởi tạo:
 
     #include "PluginIAP/PluginIAP.h"
