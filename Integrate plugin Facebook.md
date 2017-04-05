@@ -1,4 +1,4 @@
-**Hướng dẫn cài đặt plugin Facebook sử dụng SDKBOX**
+#**Hướng dẫn cài đặt plugin Facebook sử dụng SDKBOX**
 
 **1. Cài đặt SDKBOX (Xem ở bài cài plugin GoogleAnalytics)**
 **2. Chạy câu lệnh bằng command line:**
@@ -6,8 +6,8 @@
   **sdkbox import facebook**
   ![](
 https://lh3.googleusercontent.com/TFiABDutk4ewHXBUziWkEnh4vL96N_SrHFUuepch8tnseO1K1Pym5sQsr2wfxt0z3MXVGJfze1Q_TaUYwhMirbSRQzGeAQnC=w2400-h1350-rw-no)
-**3. Setup Android**
-
+**3. Setup Platform**
+**Đối với Android**
 - Sử dụng java &gt;= 1.7
 - Truy cập [https://developers.facebook.com/quickstarts/?platform=android](https://developers.facebook.com/quickstarts/?platform=android)
 
@@ -27,11 +27,70 @@ https://lh3.googleusercontent.com/TFiABDutk4ewHXBUziWkEnh4vL96N_SrHFUuepch8tnseO
 - Tới ./proj.android/ và sửa file project.properties thành target=android-15(hoặc cao hơn) 
 ![](https://lh3.googleusercontent.com/iBmNoVfAV78b38JO8Khi9GBlhwNkSwo2Ya4rBm-FlzrkprAKm6wWR0WhHq1n_F-lyyPm_8HPLJMd2j06lnWcwgTgOq3LB02a=w2400-h1350-rw-no)
 
+**Đối với iOS**
+- Sửa file &lt;project_root&gt;/proj.ios_mac/ios/info.plist: Thêm các dòng sau vào giữa <dict> ... </dict>
+
+*lưu ý thay đổi AppID Facebook của ứng dụng*
+
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>fb131512794031280</string>
+      </array>
+      </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>131512794031280</string>
+    <key>FacebookDisplayName</key>
+    <string>DragonHunting</string>
+và
+
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>fbapi</string>
+      <string>fb-messenger-api</string>
+      <string>fbauth2</string>
+      <string>fbshareextension</string>
+    </array>
+
+  Sửa file &lt;project_root&gt;/proj.ios_mac/ios/AppController.mm
 
 
+    Trong hàm
+    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+      // ...
 
+      //
+      // **************************
+      // !! IMPORTANT !!
+      // **************************
+      //
+      // gọi hàm [[FBSDKApplicationDelegate sharedInstance] application:didFinishLaunchingWithOptions
+      // trước app->run()
 
+      BOOL ret = [[FBSDKApplicationDelegate sharedInstance] application:application
+                                          didFinishLaunchingWithOptions:launchOptions];
+      app->run();
+      return ret;
+    }
 
+    - (BOOL)application:(UIApplication *)application
+                openURL:(NSURL *)url
+      sourceApplication:(NSString *)sourceApplication
+             annotation:(id)annotation {
+      return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                             openURL:url
+                                                   sourceApplication:sourceApplication
+                                                          annotation:annotation];
+    }
+
+    - (void)applicationDidBecomeActive:(UIApplication *)application {
+      [FBSDKAppEvents activateApp];
+    }
+    
+ *Lưu ý: Thêm các framework trong &lt;project_root&gt;/proj.mac_ios vào project Xcode*   
 
 **4. Sửa file json của sdkbox**
 
